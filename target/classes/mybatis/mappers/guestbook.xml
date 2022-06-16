@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="guestbook">
+	<resultMap id="resultMapGuestBookVo" type="com.javaex.vo.GuestBookVo">
+		<result column="no" property="no"/>
+		<result column="name" property="name"/>
+		<result column="password" property="password"/>
+		<result column="content" property="content"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
+	
+	<!-- 모든 방문자의 정보 가져오기 -->
+	<select id="selectList" resultMap="resultMapGuestBookVo">
+		<![CDATA[
+		 select no, 
+				name, 
+				password, 
+				content, 
+				reg_date 
+		 from guestbook 
+		 order by no asc
+		]]>
+	</select>
+	
+	<!-- 방문자 추가로 등록하기 -->
+	<insert id="guestAdd" parameterType="com.javaex.vo.GuestBookVo">
+		<![CDATA[
+		insert into guestbook  
+	 	values(seq_guestbook_no.nextval, #{name} ,#{password} ,#{content}, sysdate)
+		]]>
+	</insert>
+	
+	<!-- 방문자 정보 1명 지우기 -->
+	<delete id="guestDelete" parameterType="int">
+		<![CDATA[
+		delete from guestbook 
+		where no = #{no}
+		]]>
+	</delete>
+	
+	<!-- 1명 정보 가져오기 -->
+	<select id="getGuest" parameterType="int" resultMap="resultMapGuestBookVo">
+		<![CDATA[
+		 select no, 
+				name, 
+				password, 
+				content, 
+				reg_date 
+		 from guestbook 
+		 where no =#{no} 
+		]]>
+	</select>
+</mapper>
